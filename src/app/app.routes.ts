@@ -1,13 +1,22 @@
 import { Routes } from '@angular/router';
-import { HomeComponent } from './pages/home/home';
-import { AboutComponent } from './pages/about/about'; 
-import { PostsComponent } from './pages/posts/posts';
-import { ContactFormComponent } from './pages/contact-form/contact-form';
+import { LoginComponent } from './pages/login/login';
+import { DashboardComponent } from './pages/dashboard/dashboard';
+import { RemittanceComponent } from './pages/remittance/remittance';
+import { SupportComponent } from './pages/support/support';
+//import { AuthGuard } from './core/auth.guard';
+import { AppLayoutComponent } from './layout/app-layout/app-layout';
 
 export const routes: Routes = [
-  { path: 'home', component: HomeComponent },
-  { path: '', redirectTo: 'home', pathMatch: 'full' },
-  { path: 'about', component: AboutComponent },
-  { path: 'posts', component: PostsComponent },
-  { path: 'contact', component: ContactFormComponent }
+  { path: 'login', component: LoginComponent },
+  {
+    path: '',
+    component: AppLayoutComponent,
+    //canActivateChild: [AuthGuard],
+    children: [
+      { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+      { path: 'dashboard', component: DashboardComponent },
+      { path: 'remittance', component: RemittanceComponent },
+      { path: 'support', component: SupportComponent }
+    ]
+  }
 ];
