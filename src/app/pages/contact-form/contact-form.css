@@ -1,0 +1,12 @@
+form {
+    max-width: 500px;
+    margin: auto;
+  }
+  .form-group {
+    margin-bottom: 1rem;
+  }
+  input.ng-invalid.ng-touched,
+  textarea.ng-invalid.ng-touched {
+    border-color: red;
+  }
+  
