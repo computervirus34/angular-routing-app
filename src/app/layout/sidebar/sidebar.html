@@ -1,18 +1,9 @@
-<div class="bg-light p-3" [class.d-none]="collapsed" style="width: 200px; min-height: 100vh;">
+<div [class.collapsed]="collapsed" class="sidebar bg-light border-end">
   <ul class="nav flex-column">
-    <li class="nav-item">
-      <a class="nav-link" routerLink="/dashboard">
-        <i class="bi bi-house-door"></i> Dashboard
-      </a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" routerLink="/remittance">
-        <i class="bi bi-currency-exchange"></i> Remittance
-      </a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" routerLink="/support">
-        <i class="bi bi-life-preserver"></i> Support
+    <li class="nav-item" *ngFor="let item of menuItems">
+      <a class="nav-link d-flex align-items-center" [routerLink]="item.link" routerLinkActive="active" [title]="collapsed ? item.name : ''">
+        <i [class]="'bi ' + item.icon"></i>
+        <span *ngIf="!collapsed" class="ms-2">{{ item.name }}</span>
       </a>
     </li>
   </ul>

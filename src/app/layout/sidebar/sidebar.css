@@ -1,0 +1,24 @@
+.sidebar {
+  width: 220px;
+  height: 85vh;
+  transition: width 0.3s;
+}
+
+.sidebar.collapsed {
+  width: 60px;
+}
+
+.sidebar .nav-link {
+  padding: 10px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sidebar.collapsed .nav-link span {
+  display: none;
+}
+
+.sidebar .nav-link i {
+  font-size: 1.2rem;
+}

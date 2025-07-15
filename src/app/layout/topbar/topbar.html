@@ -1,9 +1,9 @@
 <nav class="navbar navbar-expand navbar-dark bg-dark">
-  <button class="btn btn-outline-light ms-3 me-2">  <!-- (click)="toggleSidebar()" -->
+  <button class="btn btn-outline-light ms-3 me-2" (click)="toggleSidebar.emit()">  <!--  -->
     <i class="bi bi-list"></i>
   </button>
   <a class="navbar-brand" href="#">Partner Portal</a>
-  <div class="ms-auto me-3"> <!--  *ngIf="auth.isLoggedIn()" -->
+  <div class="ms-auto me-3" *ngIf="auth.isLoggedIn()"> <!--   -->
     <button class="btn btn-outline-light btn-sm" (click)="logout()">Logout</button>
   </div>
 </nav>

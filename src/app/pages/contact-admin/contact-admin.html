@@ -1,0 +1,50 @@
+<h2>Contact Submissions</h2>
+
+<form (submit)="onSearch(); $event.preventDefault()">
+  <input type="text" [(ngModel)]="search" name="search" placeholder="Search by name or email" />
+  <button type="submit">Search</button>
+</form>
+
+
+<table class="table table-bordered" *ngIf="!loading && submissions.length > 0">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Message</th>
+      <th>Submitted At</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let sub of submissions; let i = index">
+      <td>{{ i + 1 }}</td>
+      <td>{{ sub.name }}</td>
+      <td>{{ sub.email }}</td>
+      <td>{{ sub.message }}</td>
+      <td>{{ sub.createdAt | date:'short' }}</td>
+    </tr>
+  </tbody>
+</table>
+
+<div *ngIf="!loading && submissions.length === 0">
+  No submissions found.
+</div>
+
+<div *ngIf="loading">
+  Loading...
+</div>
+
+<div class="pagination-controls" *ngIf="!loading && total > 0">
+  <button (click)="prevPage()" [disabled]="page === 1">Previous</button>
+  Page {{ page }} of {{ totalPages }}
+  <button (click)="nextPage()" [disabled]="page === totalPages">Next</button>
+
+ <select [(ngModel)]="pageSize" (ngModelChange)="onSearch()">
+  <option [value]="5">5</option>
+  <option [value]="10">10</option>
+  <option [value]="20">20</option>
+  <option [value]="50">50</option>
+</select>
+  <button (click)="exportToCsv()">Export to CSV</button>
+</div>

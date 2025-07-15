@@ -25,3 +25,7 @@
 
   <button type="submit" class="btn btn-primary" [disabled]="contactForm.invalid">Submit</button>
 </form>
+
+<div *ngIf="successMessage" class="alert alert-success">{{ successMessage }}</div>
+<div *ngIf="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
+

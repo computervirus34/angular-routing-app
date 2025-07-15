@@ -1,0 +1,36 @@
+<div class="container mt-4">
+  <h2>Sub-User Management</h2>
+  <p *ngIf="!isCompanyAdmin" class="text-danger">Access denied. Only company admins can manage sub-users.</p>
+
+  <div *ngIf="isCompanyAdmin">
+    <form (ngSubmit)="createSubUser()">
+      <div class="mb-3">
+        <label for="username" class="form-label">Username</label>
+        <input type="text" [(ngModel)]="newUser.username" name="username" class="form-control" required>
+      </div>
+      <div class="mb-3">
+        <label for="password" class="form-label">Password</label>
+        <input type="password" [(ngModel)]="newUser.password" name="password" class="form-control" required>
+      </div>
+      <button type="submit" class="btn btn-primary">Create Sub-User</button>
+    </form>
+
+    <hr />
+
+    <h4>Sub-Users List</h4>
+    <table class="table table-bordered" *ngIf="subUsers.length > 0">
+      <thead>
+        <tr>
+          <th>Username</th>
+          <th>Created At</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of subUsers">
+          <td>{{ user.username }}</td>
+          <td>{{ user.createdAt | date:'short' }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
