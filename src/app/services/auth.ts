@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
 export class AuthService {
   private apiUrl = 'http://localhost:5266/api/Auth';
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private http: HttpClient, private router: Router) { }
 
   login(username: string, password: string) {
     return this.http.post<{ token: string }>(`${this.apiUrl}/login`, { username, password });
@@ -30,15 +30,48 @@ export class AuthService {
   isLoggedIn() {
     return !!this.getToken();
   }
-   isCompanyAdmin(): boolean {
+  private getDecodedToken(): any | null {
     const token = this.getToken();
-    if (!token) return false;
+    if (!token) return null;
 
-    // Decode the JWT
-    const payload = token.split('.')[1];
-    const decoded = JSON.parse(atob(payload));
+    try {
+      const payload = token.split('.')[1];
+      return JSON.parse(atob(payload));
+    } catch (e) {
+      return null;
+    }
+  }
 
-    // Assume the role is in "role" or "UserRole"
-    return decoded.role === 'CompanyAdmin' || decoded.UserRole === 'CompanyAdmin';
+  getTokenExpiration(): number | null {
+    const token = this.getToken();
+    if (!token) return null;
+    const payload = JSON.parse(atob(token.split('.')[1]));
+    return payload.exp ? payload.exp * 1000 : null; // exp in seconds → ms
+  }
+  getPartnerId(): string {
+   const decoded = this.getDecodedToken();
+    return decoded?.partnerId || null;
+  }
+
+  getUserRole(): string | null {
+    const decoded = this.getDecodedToken();
+    return decoded?.role || null;
+  }
+
+  getCompanyCode(): string | null {
+    const decoded = this.getDecodedToken();
+    return decoded?.companyCode || null;
+  }
+
+  isBankAdmin(): boolean {
+    return this.getUserRole() === 'BankAdmin';
+  }
+
+  isCompanyAdmin(): boolean {
+    return this.getUserRole() === 'CompanyAdmin';
+  }
+
+  isSubUser(): boolean {
+    return this.getUserRole() === 'SubUser';
   }
 }

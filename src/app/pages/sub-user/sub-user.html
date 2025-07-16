@@ -1,36 +1,66 @@
-<div class="container mt-4">
-  <h2>Sub-User Management</h2>
-  <p *ngIf="!isCompanyAdmin" class="text-danger">Access denied. Only company admins can manage sub-users.</p>
+<div class="container py-4">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h3>Sub User Management</h3>
+    <button *ngIf="isCompanyAdmin || isBankAdmin" class="btn btn-primary" (click)="openModal(userModal)">Add Sub User</button>
+  </div>
 
-  <div *ngIf="isCompanyAdmin">
-    <form (ngSubmit)="createSubUser()">
-      <div class="mb-3">
-        <label for="username" class="form-label">Username</label>
-        <input type="text" [(ngModel)]="newUser.username" name="username" class="form-control" required>
-      </div>
-      <div class="mb-3">
-        <label for="password" class="form-label">Password</label>
-        <input type="password" [(ngModel)]="newUser.password" name="password" class="form-control" required>
-      </div>
-      <button type="submit" class="btn btn-primary">Create Sub-User</button>
-    </form>
-
-    <hr />
-
-    <h4>Sub-Users List</h4>
-    <table class="table table-bordered" *ngIf="subUsers.length > 0">
+   <h4>Users List</h4>
+    <table class="table table-bordered table-sm table-striped" *ngIf="subUsers.length > 0">
       <thead>
         <tr>
-          <th>Username</th>
+          <th>company</th>
+          <th>Email</th>
+          <th>Role</th>
           <th>Created At</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let user of subUsers">
-          <td>{{ user.username }}</td>
+          <td>{{ user.OrganizationCode }}</td>
+          <td>{{ user.email }}</td>
+          <td>{{ user.role??"Bank Admin" }}</td>
           <td>{{ user.createdAt | date:'short' }}</td>
         </tr>
       </tbody>
     </table>
+
+<div *ngIf="!isCompanyAdmin && !isBankAdmin" class="alert alert-warning">
+    You do not have access to manage users.
   </div>
+
+  <ng-template #userModal let-modal>
+    <div class="modal-header">
+      <h5 class="modal-title">Create Sub User</h5>
+      <button type="button" class="btn-close" (click)="modal.dismiss()"></button>
+    </div>
+    <form [formGroup]="userForm" (ngSubmit)="onSubmit(modal)">
+      <div class="modal-body">
+        <div class="row g-2">
+          <div class="col-md-12">
+            <label>Username</label>
+            <input class="form-control form-control-sm" formControlName="username" />
+          </div>
+          <div class="col-md-12">
+            <label>Email</label>
+            <input class="form-control form-control-sm" formControlName="email" />
+          </div>
+          <div class="col-md-12">
+            <label>Password</label>
+            <input type="password" class="form-control form-control-sm" formControlName="password" />
+          </div>
+          <div class="col-md-12" *ngIf="isBankAdmin">
+            <label>Company</label>
+            <select class="form-select form-select-sm" formControlName="companyId">
+              <option *ngFor="let c of companies" [value]="c.partnerId">{{ c.name }}-{{ c.organizationCode }}</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary btn-sm" (click)="modal.dismiss()">Cancel</button>
+        <button type="submit" class="btn btn-success btn-sm">Save</button>
+      </div>
+    </form>
+  </ng-template>
 </div>

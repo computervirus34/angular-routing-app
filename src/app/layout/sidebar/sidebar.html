@@ -1,10 +1,15 @@
 <div [class.collapsed]="collapsed" class="sidebar bg-light border-end">
   <ul class="nav flex-column">
     <li class="nav-item" *ngFor="let item of menuItems">
-      <a class="nav-link d-flex align-items-center" [routerLink]="item.link" routerLinkActive="active" [title]="collapsed ? item.name : ''">
-        <i [class]="'bi ' + item.icon"></i>
-        <span *ngIf="!collapsed" class="ms-2">{{ item.name }}</span>
-      </a>
+      <ng-container *ngIf="canAccess(item)">
+        <a class="nav-link d-flex align-items-center"
+           [routerLink]="item.link"
+           routerLinkActive="active"
+           [title]="collapsed ? item.name : ''">
+          <i [class]="'bi ' + item.icon"></i>
+          <span *ngIf="!collapsed" class="ms-2">{{ item.name }}</span>
+        </a>
+      </ng-container>
     </li>
   </ul>
 </div>
